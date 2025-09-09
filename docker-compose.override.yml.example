@@ -1,0 +1,19 @@
+# Development-specific overrides
+services:
+  app:
+    build:
+      target: builder  # Use the builder stage for development
+    volumes:
+      - .:/app:delegated  # Bind mount for source code
+      - /app/node_modules  # Anonymous volume for node_modules
+    command: ["npm", "run", "dev"]  # Run in development mode
+    environment:
+      - NODE_ENV=development
+
+  postgres:
+    ports:
+      - "5432:5432"  # Expose database port for local development
+
+  redis:
+    ports:
+      - "6379:6379"  # Expose Redis port for local development

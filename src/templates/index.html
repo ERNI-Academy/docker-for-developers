@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Training App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .container {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #404040;
+        }
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            background-color: #2e7d32;
+            color: white;
+        }
+        code {
+            background-color: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #66ccff;
+        }
+        h1, h2, h3 {
+            color: #fff;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🐳 Docker Training Application</h1>
+    <div class="container">
+        <h2>System Status</h2>
+        <p>Application is <span class="status">Running</span></p>
+        <h3>Available Endpoints:</h3>
+        <ul>
+            <li><code>/</code> - This landing page</li>
+            <li><code>/health</code> - Health check endpoint</li>
+            <li><code>/users</code> - List users (with Redis caching)</li>
+        </ul>
+    </div>
+    <div class="container">
+        <h2>Architecture</h2>
+        <ul>
+            <li>Node.js application with TypeScript</li>
+            <li>PostgreSQL database for data storage</li>
+            <li>Redis for caching</li>
+            <li>Adminer for database management (dev only)</li>
+        </ul>
+    </div>
+</body>
+</html>
