@@ -40,7 +40,6 @@ A concentrate of best practice, commands, troubleshooting, tips and tricks relat
     - [Minimal Express server with /health (if you need one)](#minimal-express-server-with-health-if-you-need-one)
     - [package.json scripts (dev/prod)](#packagejson-scripts-devprod)
   - [FAQ (quick answers)](#faq-quick-answers)
-  - [Resources](#resources)
 
 > **How to use this doc**
 > - Skim **Quick Commands** and **Gotchas** before coding
@@ -564,7 +563,3 @@ app.listen(3000, () => console.log("API on 3000"));
 ---
 
 >  When stuck: **logs first**, then **networks/ports**, then **mounts/env**, then **rebuild**.
-
-## Resources
-
-- Their [code repo](https://code.roche.com/solution-development-and-integration/sdi-sub-chapters/sws/lab-simulations/cupsim/mpo2.0/deployment-example)
