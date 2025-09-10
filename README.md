@@ -8,22 +8,22 @@ A concentrate of best practice, commands, troubleshooting, tips and tricks relat
     - [Compose Syntax](#compose-syntax)
     - [Cleanup (reclaim space)](#cleanup-reclaim-space)
   - [Example compose file](#example-compose-file)
-  - [Dockerfile (Node.js)](#dockerfile-nodejs)
-  - [Hot-Reload (fast inner loop)](#hot-reload-fast-inner-loop)
+  - [Dockerfile](#dockerfile)
+  - [Hot Reloading](#hot-reloading)
   - [Environment \& Secrets](#environment--secrets)
   - [Networking That Just Works](#networking-that-just-works)
     - [What networks exist in dev?](#what-networks-exist-in-dev)
     - [Which one should I use?](#which-one-should-i-use)
     - [Reaching the host from a container](#reaching-the-host-from-a-container)
-    - [Publishing ports (what actually happens)](#publishing-ports-what-actually-happens)
+    - [Publishing ports - What actually happens?](#publishing-ports---what-actually-happens)
     - [Useful checks](#useful-checks)
   - [Health \& Startup Order](#health--startup-order)
-  - [Common Recipes (for this stack)](#common-recipes-for-this-stack)
+  - [Common Recipes for this stack](#common-recipes-for-this-stack)
     - [Seed DB on first run](#seed-db-on-first-run)
     - [One-off DB admin (psql)](#one-off-db-admin-psql)
     - [Redis quick admin](#redis-quick-admin)
     - [Profiles (optional services)](#profiles-optional-services)
-    - [Multi-file overlays (dev vs prod)](#multi-file-overlays-dev-vs-prod)
+    - [Multi-file overlays (e.g. dev vs prod)](#multi-file-overlays-eg-dev-vs-prod)
   - [Troubleshooting Playbook (stack-specific)](#troubleshooting-playbook-stack-specific)
   - [Performance Tips](#performance-tips)
   - [Safety Checks](#safety-checks)
@@ -35,11 +35,11 @@ A concentrate of best practice, commands, troubleshooting, tips and tricks relat
     - [Node-specific](#node-specific)
   - [Copy-Paste Starters](#copy-paste-starters)
     - [.env.example](#envexample)
-    - [Healthcheck (HTTP)](#healthcheck-http)
+    - [Healthchecks](#healthchecks)
     - [Inspect what Compose created](#inspect-what-compose-created)
-    - [Minimal Express server with /health (if you need one)](#minimal-express-server-with-health-if-you-need-one)
+    - [Minimal Express server with /health](#minimal-express-server-with-health)
     - [package.json scripts (dev/prod)](#packagejson-scripts-devprod)
-  - [FAQ (quick answers)](#faq-quick-answers)
+  - [Quick tips](#quick-tips)
 
 > **How to use this doc**
 > - Skim **Quick Commands** and **Gotchas** before coding
@@ -122,7 +122,7 @@ This is the [best practices version of the stack here mentioned](./docker-compos
 
 ---
 
-## Dockerfile (Node.js)
+## Dockerfile
 
 Use a lean multi-stage build. For dev hot-reload we’ll override the `command` and mount the code (see next section).
 
@@ -155,7 +155,7 @@ CMD ["npm", "start"]
 
 ---
 
-## Hot-Reload (fast inner loop)
+## Hot Reloading
 
 Bind-mount the source and run a watch command (e.g., `nodemon` or `npm run dev`). Keep large folders out via `.dockerignore`.
 
@@ -254,7 +254,7 @@ services:
 
 Now anything in the container can talk to services on your host via `host.docker.internal` (e.g., hitting a local SMTP/dev server).
 
-### Publishing ports (what actually happens)
+### Publishing ports - What actually happens?
 
 - `ports: ["3000:3000"]` ⇒ host TCP 3000 → container TCP 3000. The **left** side is the **host** port
 - `ports: ["3000"]` ⇒ publish container TCP 3000 to a **random** host port (useful for parallel test runs)
@@ -291,7 +291,7 @@ Still racing? Add retry logic in the app’s startup (recommended) or a tiny “
 
 ---
 
-## Common Recipes (for this stack)
+## Common Recipes for this stack
 
 ### Seed DB on first run
 Put `.sql` files in `./init-scripts`. Postgres runs them on first init.
@@ -339,7 +339,7 @@ services:
 # run: docker compose --profile tools up -d
 ~~~
 
-### Multi-file overlays (dev vs prod)
+### Multi-file overlays (e.g. dev vs prod)
 ~~~bash
 # Base + prod overlay
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
@@ -506,7 +506,7 @@ REDIS_HOST=redis
 REDIS_PORT=6379
 ~~~
 
-### Healthcheck (HTTP)
+### Healthchecks
 ~~~yaml
 healthcheck:
   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
@@ -524,7 +524,7 @@ docker network ls
 docker volume ls
 ~~~
 
-### Minimal Express server with /health (if you need one)
+### Minimal Express server with /health
 ~~~javascript
 // server.js
 import express from "express";
@@ -546,7 +546,7 @@ app.listen(3000, () => console.log("API on 3000"));
 
 ---
 
-## FAQ (quick answers)
+## Quick tips
 
 - **“App can’t reach Postgres.”**
   Use hostname `postgres` and port `5432` inside the Compose network; confirm with `nc -zv postgres 5432`
